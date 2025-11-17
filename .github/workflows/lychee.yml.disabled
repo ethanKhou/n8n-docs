@@ -1,26 +1,20 @@
 name: Lychee external linkcheck
-
 on:
   schedule:
-    - cron: "18 7 * * 1"
-  workflow_dispatch:
-
+    - cron: "18 7 * * 1"  
+  workflow_dispatch: 
 jobs:
   link-check:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
-      # Check out the repo so Lychee can scan ./docs
         uses: actions/checkout@v4
-
       - name: Run Lychee Link Checker
         uses: lycheeverse/lychee-action@f796c8b7d468feb9b8c0a46da3fac0af6874d374
         with:
-          # No exclude flags here — v0.18 doesn't support them.
-          # All exclusions are driven by lychee.toml instead.
           args: --config lychee.toml ./docs
 
       - name: Report Status
         if: failure()
-        run: echo "❌ Broken internal links detected. Please fix them!"
+        run: echo "❌ Broken links detected. Please fix them!"
